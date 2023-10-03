@@ -1,6 +1,5 @@
-import datetime
-
 from django.db import models
+from django.urls import reverse
 
 
 class Author(models.Model):
@@ -12,13 +11,17 @@ class Author(models.Model):
         help_text='biography', verbose_name='short biography'
         )
 
+    def get_absolute_url(self):
+            """Возвращает URL-адрес для доступа к подробной записи этого автора."""
+            return reverse('author-detail', args=[str(self.id)])
+
     def __str__(self) -> str:
         return self.name
 
 class Genre(models.Model):
     """Model representing a book genre."""
     name = models.CharField(max_length=200, help_text = 'book genre')
-    
+
     def __str__(self) -> str:
         return self.name
 
@@ -43,10 +46,13 @@ class Book(models.Model):
         verbose_name='cover image'
         )
 
-    def __str__(self) -> str:
-        return self.title
-    
     def display_genre(self) -> str:
         return ', '.join(genre.name for genre in self.genre.all()[:3])
     display_genre.short_description = 'Genre'
     
+    def get_absolute_url(self):
+        """Возвращает URL-адрес для доступа к подробной записи этой книги."""
+        return reverse('book-detail', args=[str(self.id)])
+
+    def __str__(self) -> str:
+        return self.title

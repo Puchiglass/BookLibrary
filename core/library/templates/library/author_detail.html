@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>{{ author.name }}</h1>
+  <p><strong>Дата рождения:</strong> {{ author.birth_day }}</p>
+  <p><strong>Краткая биография:</strong> {{ author.short_bio }}</p>
+  <p>
+    <strong>Произведения:</strong>
+    <ul>
+        {% for book in author.book_set.all %}
+        <li>
+          <a href="{{ book.get_absolute_url }}">{{ book.title }}</a>
+          <br>{{book.short_des}}
+        </li>
+        {% endfor %}
+      </ul>
+  </p>
+{% endblock %}

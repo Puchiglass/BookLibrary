@@ -2,11 +2,49 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Menu</title>
+    {% block title %}
+      <title>Библиотека</title>
+    {% endblock %}
   </head>
   <body>
-    <div><a href="/">Главная</a> | <a href="/addbook">Добавить книгу</a></div>
+    
+    {% block sidebar %}
+      <div>
+        <a href="{% url 'index' %}">Главная</a> | 
+        <a href="{% url 'add book' %}">Добавить книгу</a> | 
+        <a href="{% url 'books' %}">Все книги</a> | 
+        <a href="{% url 'author' %}">Авторы</a>
+      </div>
+    {% endblock %}
+    
     {% block content %}
-    {% endblock content %}
+      <ul>
+        <li><a href="{% url 'index' %}">Home</a></li>
+        <li><a href="">All books</a></li>
+        <li><a href="">All authors</a></li>
+      </ul>
+    {% endblock %}
+    
+    {% block pagination %}
+    {% if is_paginated %}
+      <div>
+        <span>
+          {% if page_obj.has_previous %}
+            <a href="{{ request.path }}?page={{ page_obj.previous_page_number }}">пред</a>
+          {% else %}
+            пред
+          {% endif %}
+          <span>
+            {{ page_obj.number }}/{{ page_obj.paginator.num_pages }}
+          </span>
+          {% if page_obj.has_next %}
+            <a href="{{ request.path }}?page={{ page_obj.next_page_number }}">след</a>
+          {% else %}
+            след
+          {% endif %}
+        </span>
+      </div>
+    {% endif %}
+  {% endblock %}
   </body>
 </html>

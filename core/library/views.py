@@ -1,12 +1,22 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from django.views import generic
 
-from .models import Book, Author
+from .models import Book, Author, Genre
 
 
-def home(request):
-    books = Book.objects.all()
-    return render(request, 'library/home.html', {'books': books})
+def index(request):
+    """View function for home page of library site"""
+    num_books = Book.objects.count()
+    num_authors = Author.objects.count()
+    for genre in Genre.objects.all():
+        pass
+    context = {
+        'num_books': num_books,
+        'num_authors': num_authors,
+    }
+
+    return render(request, 'library/index.html', context=context)
 
 def addbook(request):
     # если запрос POST, сохраняем данные
@@ -20,3 +30,23 @@ def addbook(request):
     # передаем данные в шаблон
     authors = Author.objects.all()
     return render(request, "library/addbook.html", {"authors": authors})
+
+
+class BookListView(generic.ListView):
+    """Представление списка книг"""
+    model = Book
+    paginate_by = 10
+
+class BookDetailView(generic.DetailView):
+    """Представление детальной информации об авторе"""
+    model = Book
+
+
+class AuthorListView(generic.ListView):
+    """Представление списка авторов"""
+    model = Author
+    paginate_by = 10
+
+class AuthorDetailView(generic.DetailView):
+    """Представление детальной информации о книге"""
+    model = Author
