@@ -62,14 +62,18 @@ def addbook(request):
 def update_book(request, pk):
     book = get_object_or_404(Book, pk=pk)
     if request.method == 'POST':
-        form = UpdateBookForm(request.POST)
+        form = UpdateBookForm(request.POST, request.FILES or None, instance=book)
         if form.is_valid():
-            book.short_des = form.cleaned_data['new_description']
+            book.title = form.cleaned_data['title']
+            book.author = form.cleaned_data['author']
+            book.pub_year = form.cleaned_data['pub_year']
+            book.short_des = form.cleaned_data['short_des']
+            book.image = form.cleaned_data['image']
+            #book.short_des = form.cleaned_data['new_description']
             book.save()
             return HttpResponseRedirect(reverse('succes'))
     else:
-        proposed_new_description = 'описание осутствует'
-        form = UpdateBookForm(initial={'new_description': proposed_new_description}) 
+        form = UpdateBookForm(instance=book) 
     
     context = {
         'form': form,
