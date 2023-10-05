@@ -11,9 +11,9 @@
     {% block sidebar %}
       <div>
         <a href="{% url 'index' %}">Главная</a> | 
-        <a href="{% url 'add book' %}">Добавить книгу</a> | 
-        <a href="{% url 'books' %}">Все книги</a> | 
+        <a href="{% url 'books' %}">Книги</a> | 
         <a href="{% url 'author' %}">Авторы</a> |
+        <a href="{% url 'add book' %}">Добавить книгу</a> | 
         {% if user.is_authenticated %}
         Пользователь: {{ user.get_username }}
         <a href="{% url 'logout' %}?next={{ request.path }}">Выйти</a>

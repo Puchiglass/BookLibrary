@@ -9,8 +9,8 @@ class BookInline(admin.TabularInline):
 
 @admin.register(Author)
 class AuthorAdmin(admin.ModelAdmin):
-    list_display = ('name', 'birth_day')
-    fields = [('name', 'birth_day'), 'short_bio']
+    list_display = ('first_name', 'last_name', 'surename', 'birth_day')
+    fields = [('first_name', 'last_name', 'surename'),'birth_day', 'short_bio', 'portrait']
     inlines = [BookInline]
 
 

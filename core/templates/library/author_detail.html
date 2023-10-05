@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>{{ author.name }}</h1>
+  <h1>{{ author.get_name }}</h1>
   <p><strong>Дата рождения:</strong> {{ author.birth_day }}</p>
   <p><strong>Краткая биография:</strong> {{ author.short_bio }}</p>
   <p>

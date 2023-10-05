@@ -7,4 +7,6 @@
   <p><strong>Дата публикации:</strong> {{ book.pub_year }}</p>
   <p><strong>Жанр:</strong> {{ book.genre }}</p>
   <p><strong>Описание:</strong> {{ book.short_des }}</p>
+  <p><a href="{% url 'update-book' pk=book.id %}">Изменить описание</a></p>
+  
 {% endblock %}

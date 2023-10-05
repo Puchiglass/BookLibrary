@@ -1,10 +1,11 @@
-from django.contrib.auth.decorators import login_required, permission_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
 from django.views import generic
+from django.urls import reverse
 
 from .models import Book, Author
+from .forms import UpdateBookForm
 
 
 class BookListView(generic.ListView):
@@ -12,7 +13,7 @@ class BookListView(generic.ListView):
     model = Book
     paginate_by = 10
 
-class BookDetailView(LoginRequiredMixin, generic.DetailView):
+class BookDetailView(generic.DetailView):
     """Представление детальной информации об авторе"""
     model = Book
 
@@ -44,8 +45,6 @@ def index(request):
 
 
 @login_required
-@permission_required('catalog.can_mark_returned')
-@permission_required('catalog.can_edit')
 def addbook(request):
     # если запрос POST, сохраняем данные
     if request.method == "POST":
@@ -58,3 +57,26 @@ def addbook(request):
     # передаем данные в шаблон
     authors = Author.objects.all()
     return render(request, "library/addbook.html", {"authors": authors})
+
+@login_required
+def update_book(request, pk):
+    book = get_object_or_404(Book, pk=pk)
+    if request.method == 'POST':
+        form = UpdateBookForm(request.POST)
+        if form.is_valid():
+            book.short_des = form.cleaned_data['new_description']
+            book.save()
+            return HttpResponseRedirect(reverse('succes'))
+    else:
+        proposed_new_description = 'описание осутствует'
+        form = UpdateBookForm(initial={'new_description': proposed_new_description}) 
+    
+    context = {
+        'form': form,
+        'book': book,
+    }
+
+    return render(request, 'library/book_update_des.html', context)
+
+def succes(request):
+    return render(request, 'library/succes.html')
