@@ -53,7 +53,7 @@ def addbook(request):
         book.author_id = request.POST.get("author")
         book.pub_year = request.POST.get("pub_year")
         book.save()
-        return HttpResponseRedirect("/")
+        return HttpResponseRedirect(reverse('succes'))
     # передаем данные в шаблон
     authors = Author.objects.all()
     return render(request, "library/addbook.html", {"authors": authors})
