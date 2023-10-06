@@ -15,4 +15,9 @@
         {% endfor %}
       </ul>
   </p>
+  <img src="{{ author.portrait.url }}" width="270" height="400"><br>
+  {% if user.is_authenticated %}
+    <p><a href="{% url 'author-update' pk=author.id %}">Изменить автора</a></p>
+    <p><a href="{% url 'author-delete' pk=author.id %}">Удалить автора</a></p>
+  {% endif %}
 {% endblock %}

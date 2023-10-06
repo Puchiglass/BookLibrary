@@ -7,6 +7,10 @@
   <p><strong>Дата публикации:</strong> {{ book.pub_year }}</p>
   <p><strong>Жанр:</strong> {{ book.genre }}</p>
   <p><strong>Описание:</strong> {{ book.short_des }}</p>
-  <p><a href="{% url 'update-book' pk=book.id %}">Изменить описание</a></p>
+  <img src="{{ book.image.url }}" width="270" height="400"><br>
+  {% if user.is_authenticated %}
+    <p><a href="{% url 'book-update' pk=book.id %}">Изменить книгу</a></p>
+    <p><a href="{% url 'book-delete' pk=book.id %}">Удалить книгу</a></p>
+  {% endif %}
   
 {% endblock %}

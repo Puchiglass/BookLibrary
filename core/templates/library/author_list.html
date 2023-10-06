@@ -13,4 +13,8 @@
   {% else %}
     <p>Авторы отсутствуют в библиотеке.</p>
   {% endif %}
+
+  {% if user.is_authenticated %}
+    <a href="{% url 'author-create' %}">Добавить автора</a>
+  {% endif %}
 {% endblock %}

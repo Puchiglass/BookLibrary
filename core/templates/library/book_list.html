@@ -16,4 +16,8 @@
   {% else %}
     <p>Книги отсутствуют в библиотеке.</p>
   {% endif %}
+
+  {% if user.is_authenticated %}
+    <a href="{% url 'book-create' %}">Добавить книгу</a>
+  {% endif %}
 {% endblock %}

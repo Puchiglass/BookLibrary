@@ -79,7 +79,7 @@ class Book(models.Model):
         help_text='Cover image', 
         blank=True, 
         verbose_name='cover image',
-        )    
+        )
 
     def display_genre(self) -> str:
         return ', '.join(genre.name for genre in self.genre.all()[:3])
