@@ -3,7 +3,8 @@ from django.views import generic
 from django.http import HttpResponseRedirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import login
-from django.shortcuts import render
+from django.contrib import messages
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 
 from .forms import RegisterUserForm
@@ -27,7 +28,7 @@ class BookCreate(LoginRequiredMixin, CreateView):
 class BookUpdate(LoginRequiredMixin, UpdateView):
     model = Book
     fields = ['title', 'author', 'pub_year', 'short_des', 'genre', 'image']
-    
+
 class BookDelete(LoginRequiredMixin, DeleteView):
     model = Book
     success_url = reverse_lazy('books')
@@ -43,14 +44,14 @@ class AuthorDetailView(generic.DetailView):
 
 class AuthorCreate(LoginRequiredMixin, CreateView):
     model = Author
-    fields = ['first_name', 'last_name', 'surename', 'birth_day', 
+    fields = ['first_name', 'last_name', 'surename', 'birth_day',
               'short_bio', 'portrait']
-    
+
 class AuthorUpdate(LoginRequiredMixin, UpdateView):
     model = Author
-    fields = ['first_name', 'last_name', 'surename', 'birth_day', 
+    fields = ['first_name', 'last_name', 'surename', 'birth_day',
               'short_bio', 'portrait']
-    
+
 class AuthorDelete(LoginRequiredMixin, DeleteView):
     model = Author
     success_url = reverse_lazy('authors')
@@ -78,10 +79,15 @@ def register_request(request):
     if request.method == 'POST':
         form = RegisterUserForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            login(request, user)
-            HttpResponseRedirect(reverse('succes'))
-
+            form.save()
+            messages.success(request, "Registration successful." )
+            return HttpResponseRedirect(reverse('succes'))
+        else: # просто вывод красного сообщения будет(см. в register.html)
+            form = RegisterUserForm()
+            context = {'register_form': form, 'error': True}
+            return render(request,
+                          template_name='registration/register.html',
+                          context=context)
     form = RegisterUserForm()
-    context={'register_form': form}
+    context = {'register_form': form,}
     return render(request, template_name='registration/register.html', context=context)

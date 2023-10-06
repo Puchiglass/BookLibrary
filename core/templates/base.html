@@ -18,6 +18,8 @@
           <a href="{% url 'logout' %}?next={{ request.path }}">Выйти</a>
         {% else %}
           <a href="{% url 'login' %}?next={{ request.path }}">Войти</a>
+          /
+          <a href="{% url 'register' %}">Регистрация</a>
         {% endif %}
       </div>
     {% endblock %}
