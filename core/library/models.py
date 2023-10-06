@@ -73,17 +73,13 @@ class Book(models.Model):
         help_text='description', 
         verbose_name='short description'
         )
-    genre = models.ManyToManyField(Genre, help_text = 'genre')
+    genre = models.ForeignKey(Genre, on_delete=models.SET_NULL, null=True, help_text = 'genre')
     image = models.ImageField(
         upload_to='images/book',
         help_text='Cover image', 
         blank=True, 
         verbose_name='cover image',
         )
-
-    def display_genre(self) -> str:
-        return ', '.join(genre.name for genre in self.genre.all()[:3])
-    display_genre.short_description = 'Genre'
     
     def get_absolute_url(self):
         """Возвращает URL-адрес для доступа к подробной записи этой книги."""

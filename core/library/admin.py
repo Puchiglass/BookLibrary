@@ -21,4 +21,4 @@ class GenreAdmin(admin.ModelAdmin):
 
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
-    list_display = ('title', 'author', 'display_genre', 'pub_year')
+    list_display = ('title', 'author', 'genre', 'pub_year')
