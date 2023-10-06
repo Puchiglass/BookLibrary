@@ -1,13 +1,14 @@
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views import generic
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404, render
-from django.urls import reverse, reverse_lazy
 from django.http import HttpResponseRedirect
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth import login
+from django.shortcuts import render
+from django.urls import reverse_lazy, reverse
+
+from .forms import RegisterUserForm
 
 from .models import Book, Author
-from .forms import UpdateBookForm
 
 
 class BookListView(generic.ListView):
@@ -70,47 +71,17 @@ def index(request):
 
     return render(request, 'library/index.html', context=context)
 
-
 def succes(request):
     return render(request, 'library/succes.html')
 
+def register_request(request):
+    if request.method == 'POST':
+        form = RegisterUserForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            HttpResponseRedirect(reverse('succes'))
 
-# Мои старые функции добавления и обновления книги
-# 
-# @login_required
-# def addbook(request):
-#     # если запрос POST, сохраняем данные
-#     if request.method == "POST":
-#         book = Book()
-#         book.title = request.POST.get("title")
-#         book.author_id = request.POST.get("author")
-#         book.pub_year = request.POST.get("pub_year")
-#         book.save()
-#         return HttpResponseRedirect(reverse('succes'))
-#     # передаем данные в шаблон
-#     authors = Author.objects.all()
-#     return render(request, "library/addbook.html", {"authors": authors})
-
-# @login_required
-# def update_book(request, pk):
-#     book = get_object_or_404(Book, pk=pk)
-#     if request.method == 'POST':
-#         form = UpdateBookForm(request.POST, request.FILES or None, instance=book)
-#         if form.is_valid():
-#             book.title = form.cleaned_data['title']
-#             book.author = form.cleaned_data['author']
-#             book.pub_year = form.cleaned_data['pub_year']
-#             book.short_des = form.cleaned_data['short_des']
-#             book.image = form.cleaned_data['image']
-#             #book.short_des = form.cleaned_data['new_description']
-#             book.save()
-#             return HttpResponseRedirect(reverse('succes'))
-#     else:
-#         form = UpdateBookForm(instance=book) 
-    
-#     context = {
-#         'form': form,
-#         'book': book,
-#     }
-
-#     return render(request, 'library/book_update_des.html', context)
+    form = RegisterUserForm()
+    context={'register_form': form}
+    return render(request, template_name='registration/register.html', context=context)
