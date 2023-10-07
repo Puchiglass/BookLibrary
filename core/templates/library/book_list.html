@@ -17,7 +17,27 @@
     <p>Книги отсутствуют в библиотеке.</p>
   {% endif %}
 
+  {% if is_paginated %}
+    <div>
+      <span>
+        {% if page_obj.has_previous %}
+          <a href="{{ request.path }}?page={{ page_obj.previous_page_number }}">пред</a>
+        {% else %}
+          пред
+        {% endif %}
+        <span>
+          {{ page_obj.number }}/{{ page_obj.paginator.num_pages }}
+        </span>
+        {% if page_obj.has_next %}
+          <a href="{{ request.path }}?page={{ page_obj.next_page_number }}">след</a>
+        {% else %}
+          след
+        {% endif %}
+      </span>
+    </div>
+  {% endif %}
+
   {% if user.is_authenticated %}
-    <a href="{% url 'book-create' %}">Добавить книгу</a>
+    <p><a href="{% url 'book-create' %}">Добавить книгу</a></p>
   {% endif %}
 {% endblock %}
