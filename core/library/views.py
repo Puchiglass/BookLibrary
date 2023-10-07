@@ -7,9 +7,8 @@ from django.contrib import messages
 from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
 
+from .models import Book, Author, Comment
 from .forms import RegisterUserForm
-
-from .models import Book, Author
 
 
 class BookList(generic.ListView):
@@ -67,6 +66,10 @@ class SearchResultsBook(generic.ListView):
             Q(author__first_name__icontains=target) |
             Q(author__last_name__icontains=target)
         )
+
+class CommentCreate(LoginRequiredMixin, CreateView):
+    model = Comment
+    fields = ['book', 'name', 'content']
 
 
 def index(request):

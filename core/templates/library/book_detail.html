@@ -13,4 +13,23 @@
     <p><a href="{% url 'book-delete' pk=book.id %}">Удалить книгу</a></p>
   {% endif %}
   
+  <hr>
+  <h3>Комментарии к книге:</h3>
+  {% if not book.comments.all %}
+    Комментарии отствуют...
+  {% else %}
+    {% for comment in book.comments.all %}
+      <strong>{{ comment.name }} - {{ comment.date_pub }}</strong>
+      <br/>
+      {{ comment.content }}
+      <br/><br/>
+    {% endfor %}
+  {% endif %}
+  {% if user.is_authenticated %}
+    <p><a href="{% url 'comment-create' %}">Добавить комментарий</a></p>
+  {% else %}
+    Авторизуйтесь, чтобы оставлять комментарии.
+    <br/>
+    <a href="{% url 'login' %}?next={{ request.path }}">Авторизоваться</a>
+  {% endif %}
 {% endblock %}

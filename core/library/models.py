@@ -4,6 +4,7 @@ from django.urls import reverse
 
 class Author(models.Model):
     """Model representing a author."""
+
     first_name = models.CharField(max_length=100,
                                 default='',
                                 help_text='имя')
@@ -36,8 +37,8 @@ class Author(models.Model):
         return f'{self.first_name} {self.last_name}'
 
     def get_absolute_url(self):
-            """Возвращает URL-адрес для доступа к подробной записи этого автора."""
-            return reverse('author-detail', args=[str(self.id)])
+        """Возвращает URL-адрес для доступа к подробной записи этого автора."""
+        return reverse('author-detail', args=[str(self.id)])
 
     def __str__(self) -> str:
         return f'{self.first_name} {self.last_name}'
@@ -92,3 +93,19 @@ class Book(models.Model):
 
     def __str__(self) -> str:
         return self.title
+    
+
+class Comment(models.Model):
+    """Model representing a comment"""
+
+    book = models.ForeignKey(Book, related_name='comments', on_delete=models.CASCADE)
+    content = models.TextField()
+    name = models.CharField(max_length=250)
+    date_pub = models.DateField(auto_now_add=True)
+    
+    def get_absolute_url(self):
+        """Возвращает URL-адрес для доступа к подробной записи этой книги."""
+        return reverse('books')
+
+    def __str__(self) -> str:
+        return f'Book: {self.book.title}, name: {self.name}'

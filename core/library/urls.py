@@ -17,4 +17,5 @@ urlpatterns = [
     path('succes/', views.succes, name='succes'),
     path('register/', views.register_request, name='register'),
     path('search/', views.SearchResultsBook.as_view(), name='search_results'),
+    path('comment-create/', views.CommentCreate.as_view(), name='comment-create'),
 ]

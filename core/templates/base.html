@@ -22,6 +22,7 @@
           <a href="{% url 'register' %}">Регистрация</a>
         {% endif %}
       </div>
+      <br/>
       <div>
         <form action="{% url 'search_results' %}" method="GET">
           {% csrf_token %}
