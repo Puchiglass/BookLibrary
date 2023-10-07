@@ -1,10 +1,10 @@
+from django.db.models import Q
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views import generic
 from django.http import HttpResponseRedirect
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth import login
 from django.contrib import messages
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
 
 from .forms import RegisterUserForm
@@ -12,12 +12,12 @@ from .forms import RegisterUserForm
 from .models import Book, Author
 
 
-class BookListView(generic.ListView):
+class BookList(generic.ListView):
     """Представление списка книг"""
     model = Book
     paginate_by = 10
 
-class BookDetailView(generic.DetailView):
+class BookDetail(generic.DetailView):
     """Представление детальной информации об авторе"""
     model = Book
 
@@ -33,12 +33,12 @@ class BookDelete(LoginRequiredMixin, DeleteView):
     model = Book
     success_url = reverse_lazy('books')
 
-class AuthorListView(generic.ListView):
+class AuthorList(generic.ListView):
     """Представление списка авторов"""
     model = Author
     paginate_by = 10
 
-class AuthorDetailView(generic.DetailView):
+class AuthorDetail(generic.DetailView):
     """Представление детальной информации о книге"""
     model = Author
 
@@ -55,6 +55,18 @@ class AuthorUpdate(LoginRequiredMixin, UpdateView):
 class AuthorDelete(LoginRequiredMixin, DeleteView):
     model = Author
     success_url = reverse_lazy('authors')
+
+class SearchResultsBook(generic.ListView):
+    model = Book
+    template_name = 'search_result_book.html'
+
+    def get_queryset(self):
+        target = self.request.GET.get('target')
+        return Book.objects.filter(
+            Q(title__icontains=target) | 
+            Q(author__first_name__icontains=target) |
+            Q(author__last_name__icontains=target)
+        )
 
 
 def index(request):

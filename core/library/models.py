@@ -73,7 +73,12 @@ class Book(models.Model):
         help_text='description', 
         verbose_name='short description'
         )
-    genre = models.ForeignKey(Genre, on_delete=models.SET_NULL, null=True, help_text = 'genre')
+    genre = models.ForeignKey(
+        Genre, 
+        on_delete=models.SET_NULL, 
+        null=True, 
+        help_text = 'genre'
+        )
     image = models.ImageField(
         upload_to='images/book',
         help_text='Cover image', 

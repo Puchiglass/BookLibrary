@@ -22,6 +22,16 @@
           <a href="{% url 'register' %}">Регистрация</a>
         {% endif %}
       </div>
+      <div>
+        <form action="{% url 'search_results' %}" method="GET">
+          {% csrf_token %}
+          {% if request.target %}
+            <p>Theory is work</p>
+          {% endif %}
+          <input name="target" type="text" placeholder="Поиск...">
+          <button type="submit">найти</button>
+        </form>
+      </div>
     {% endblock %}
     
     {% block content %}
