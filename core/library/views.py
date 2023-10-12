@@ -1,7 +1,6 @@
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy, reverse
 from django.shortcuts import render
@@ -97,7 +96,6 @@ def register_request(request):
         form = RegisterUserForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, "Registration successful." )
             return HttpResponseRedirect(reverse('succes'))
         else: # просто вывод красного сообщения будет(см. в register.html)
             form = RegisterUserForm()
