@@ -28,7 +28,7 @@ virtualenv venv
 source venv/bin/activate
 pip install -r requirements.txt
 ```
-**3. Миграция & Старт сервера**
+**3. Миграция & Старт сервера**  
 Для начала нужно перейти в каталог core/
 ```sh
 cd core
@@ -36,5 +36,5 @@ python manage.py makemigrations
 python manage.py migrate
 python manage.py runserver
 ```
-** 4. Переходим на сайт **
+** 4. Переходим на сайт **  
 [BookLibrary](http://127.0.0.1:8000/)
