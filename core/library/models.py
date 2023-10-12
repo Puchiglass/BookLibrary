@@ -5,28 +5,31 @@ from django.urls import reverse
 class Author(models.Model):
     """Model representing a author."""
 
-    first_name = models.CharField(max_length=100,
-                                default='',
-                                help_text='имя')
-    last_name = models.CharField(max_length=100,
-                                default='',
-                                help_text='фамилия')
-    surename = models.CharField(max_length=100,
-                                default='', 
-                                null=True, 
-                                blank=True, 
-                                help_text='отчество, если есть')
+    first_name = models.CharField(
+        max_length=100,
+        default='',
+        help_text='имя')
+    last_name = models.CharField(
+        max_length=100,
+        default='',
+        help_text='фамилия')
+    surename = models.CharField(
+        max_length=100,
+        default='', 
+        null=True, 
+        blank=True, 
+        help_text='отчество, если есть')
     birth_day = models.DateField(blank=True, help_text='1900-01-01')
     short_bio = models.CharField(
         max_length=300, 
         blank=True,  
-        help_text='biography', 
+        help_text='биография', 
         verbose_name='short biography'
         )
     portrait = models.ImageField(
         upload_to='images/authors',
-        help_text='Portrait', 
         blank=True, 
+        help_text='портрет', 
         verbose_name='portrait',
         )
     
@@ -46,7 +49,7 @@ class Author(models.Model):
 
 class Genre(models.Model):
     """Model representing a book genre."""
-    name = models.CharField(max_length=200, help_text = 'book genre')
+    name = models.CharField(max_length=200, help_text = 'жанр')
 
     def __str__(self) -> str:
         return self.name
@@ -60,30 +63,30 @@ class Book(models.Model):
         Author, 
         null=True,
         on_delete=models.SET_NULL, 
-        help_text='author'
+        help_text='автор'
         )
     pub_year = models.IntegerField(
         default=0, 
         blank=True, 
-        help_text='1900', 
+        help_text='год публикации', 
         verbose_name='year of published'
         )
     short_des = models.CharField(
         max_length=300, 
         blank=True, 
-        help_text='description', 
+        help_text='описание', 
         verbose_name='short description'
         )
     genre = models.ForeignKey(
         Genre, 
         on_delete=models.SET_NULL, 
         null=True, 
-        help_text = 'genre'
+        help_text = 'жанр'
         )
     image = models.ImageField(
         upload_to='images/book',
-        help_text='Cover image', 
         blank=True, 
+        help_text='обложка', 
         verbose_name='cover image',
         )
     

@@ -1,11 +1,11 @@
-from django.db.models import Q
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views import generic
-from django.http import HttpResponseRedirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
-from django.shortcuts import render
+from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy, reverse
+from django.shortcuts import render
+from django.db.models import Q
 
 from .models import Book, Author, Comment
 from .forms import RegisterUserForm
@@ -17,7 +17,7 @@ class BookList(generic.ListView):
     paginate_by = 10
 
 class BookDetail(generic.DetailView):
-    """Представление детальной информации об авторе"""
+    """Представление детальной информации о книге"""
     model = Book
 
 class BookCreate(LoginRequiredMixin, CreateView):
@@ -32,13 +32,14 @@ class BookDelete(LoginRequiredMixin, DeleteView):
     model = Book
     success_url = reverse_lazy('books')
 
+
 class AuthorList(generic.ListView):
     """Представление списка авторов"""
     model = Author
     paginate_by = 10
 
 class AuthorDetail(generic.DetailView):
-    """Представление детальной информации о книге"""
+    """Представление детальной информации об авторе"""
     model = Author
 
 class AuthorCreate(LoginRequiredMixin, CreateView):
@@ -54,6 +55,7 @@ class AuthorUpdate(LoginRequiredMixin, UpdateView):
 class AuthorDelete(LoginRequiredMixin, DeleteView):
     model = Author
     success_url = reverse_lazy('authors')
+
 
 class SearchResultsBook(generic.ListView):
     model = Book
