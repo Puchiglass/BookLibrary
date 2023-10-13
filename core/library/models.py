@@ -36,7 +36,7 @@ class Author(models.Model):
     def get_name(self):
         """Возвращает полное имя"""
         if self.surename:
-            return f'{self.first_name} {self.surename} {self.last_name} '
+            return f'{self.first_name} {self.surename} {self.last_name}'
         return f'{self.first_name} {self.last_name}'
 
     def get_absolute_url(self):
